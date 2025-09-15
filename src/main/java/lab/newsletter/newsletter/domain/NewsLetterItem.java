@@ -18,7 +18,7 @@ import java.time.format.DateTimeFormatter;
 @DynamoDbBean
 @Getter
 @Setter
-@AllArgsConstructor(access = AccessLevel.PRIVATE)
+@AllArgsConstructor
 @NoArgsConstructor
 public class NewsLetterItem {
     @Setter
