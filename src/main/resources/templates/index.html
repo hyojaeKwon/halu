@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ko">
+<head>
+    <meta charset="UTF-8" />
+    <title>하루한조각 – Home</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <script>
+        (function(){
+            try{
+                var pref = localStorage.getItem('theme');
+                if(pref === 'dark'){ document.documentElement.setAttribute('data-theme','dark'); }
+                else if(pref === 'light'){ document.documentElement.setAttribute('data-theme','light'); }
+            }catch(e){}
+        })();
+    </script>
+    <!-- Google Tag Manager -->
+    <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+            new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+        j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+        'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+    })(window,document,'script','dataLayer','GTM-KRG86BP5');</script>
+    <!-- End Google Tag Manager -->
+    <style>
+        :root,[data-theme="light"]{
+            --bg:#ffffff;--fg:#1e1e1e;--muted:#767676;--line:#e9e9e9;--accent:#111;
+            --w:760px;
+        }
+        @media (prefers-color-scheme: dark){
+            :root:not([data-theme="light"]){
+                --bg:#0f1115;--fg:#e6e6e6;--muted:#9aa0a6;--line:#2a2f38;--accent:#e6e6e6;
+            }
+        }
+        [data-theme="dark"]{
+            --bg:#0f1115;--fg:#e6e6e6;--muted:#9aa0a6;--line:#2a2f38;--accent:#e6e6e6;
+        }
+        *{box-sizing:border-box}
+        html,body{height:100%}
+        body{margin:0;font-family:ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Apple SD Gothic Neo,Noto Sans KR,sans-serif;color:var(--fg);background:var(--bg);}
+        header{padding:32px 16px;border-bottom:1px solid var(--line);position:relative;}
+        .theme-toggle{
+            position: absolute; right: 16px; top: 16px;
+            border:1px solid var(--line); background:transparent; color:var(--fg);
+            padding:8px 10px; border-radius:999px; font-size:13px; cursor:pointer;
+        }
+        .theme-toggle:hover{background:rgba(0,0,0,0.04)}
+        [data-theme="dark"] .theme-toggle:hover{background:rgba(255,255,255,0.06)}
+        .theme-toggle:active{transform:scale(.98)}
+        /* Smooth theme transitions (respects reduced motion) */
+        @media (prefers-reduced-motion: no-preference){
+            body, header, .brand, .item, .meta, .hits, .search input, .search button, .title a, .theme-toggle, footer{
+                transition: background-color .25s ease, color .25s ease, border-color .25s ease, box-shadow .25s ease, transform .15s ease;
+            }
+        }
+        .brand{max-width:var(--w);margin:0 auto;text-align:center}
+        .brand h1{margin:0 0 6px 0;font-size:28px;font-weight:700;letter-spacing:.2px}
+        .brand p{margin:0;color:var(--muted);font-size:14px}
+
+        .wrap{max-width:var(--w);margin:0 auto;padding:28px 16px;}
+
+        /* centered search */
+        .search{display:flex;justify-content:center;margin:10px 0 26px}
+        .search form{width:100%;max-width:760px;display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+        .search input{flex:1;padding:14px 16px;border:1px solid var(--line);border-radius:999px;font-size:16px;}
+        .search select{padding:14px 16px;border:1px solid var(--line);border-radius:999px;font-size:16px;background:var(--bg);color:var(--fg)}
+        .search label{color:var(--fg);font-size:14px}
+        .search input[type="checkbox"]{width:18px;height:18px;accent-color:#555}
+        .search button{padding:12px 18px;border:0;border-radius:999px;background:var(--accent);color:var(--bg);font-size:16px;cursor:pointer}
+        .search button:hover{opacity:.96;transform:translateY(-1px);box-shadow:0 6px 16px rgba(0,0,0,.08)}
+        [data-theme="dark"] .search button:hover{box-shadow:0 6px 16px rgba(0,0,0,.35)}
+        .search button:active{transform:translateY(0);opacity:1}
+        /* footer actions */
+        .footer-actions{margin-top:10px}
+        .btn{display:inline-block;padding:10px 14px;border-radius:999px;border:1px solid var(--line);background:var(--accent);color:var(--bg);text-decoration:none;font-size:14px;cursor:pointer}
+        .btn:hover{opacity:.96;transform:translateY(-1px);box-shadow:0 6px 16px rgba(0,0,0,.08)}
+        [data-theme="dark"] .btn:hover{box-shadow:0 6px 16px rgba(0,0,0,.35)}
+        .btn:active{transform:translateY(0);opacity:1}
+        .search .actions{width:100%;display:flex;gap:10px;justify-content:center;margin-top:6px}
+        .search input,.search select,.search button{background:var(--bg);color:var(--fg)}
+        .search button{background:var(--accent);color:var(--bg)}
+
+        /* list (single column, centered) */
+        .hint{text-align:center;color:var(--muted);margin:0 0 12px;font-size:14px}
+        .list{max-width:var(--w);margin:0 auto}
+        .item{padding:18px 0;border-top:1px solid var(--line)}
+        .item:first-child{border-top:none}
+        .title{margin:0 0 6px;font-size:20px;line-height:1.35;text-align:center}
+        .title a{color:inherit;text-decoration:none}
+        .title a:hover{text-decoration:underline}
+        .meta{color:var(--muted);font-size:13px;text-align:center;margin-bottom:10px}
+        .hits{color:var(--muted);font-size:13px;text-align:center;margin-top:6px}
+        .excerpt{max-width:680px;margin:0 auto;color:#333;line-height:1.65;text-align:center}
+
+        footer{max-width:var(--w);margin:36px auto 60px;text-align:center;color:#aaa;font-size:12px}
+        .empty{color:var(--muted);text-align:center;padding:40px 0}
+
+        /* --- Mobile optimization --- */
+        /* Generic content safety */
+        img{max-width:100%;height:auto}
+        pre{max-width:100%;overflow:auto}
+        code{white-space:pre-wrap;word-break:break-word}
+        table{width:100%;border-collapse:collapse;display:block;overflow:auto}
+
+        @media (max-width: 760px){
+            :root{--w:100%}
+            header{padding:20px 12px}
+            .brand h1{font-size:22px}
+            .brand p{font-size:13px}
+
+            .wrap{padding:20px 12px}
+
+            /* Search bar spacing on small screens */
+            .search{margin:6px 0 18px}
+            .search form{max-width:100%;gap:8px}
+            .search input{padding:12px 14px;font-size:15px}
+            .search select{padding:12px 14px;font-size:15px}
+            .search button{padding:10px 14px;font-size:15px;min-width:92px}
+
+            /* List readability */
+            .title{font-size:18px;text-align:left}
+            .meta{font-size:12px;text-align:left}
+            .hits{font-size:12px;text-align:left}
+            .excerpt{margin:8px 0 0;color:#333;line-height:1.7;text-align:left}
+        }
+        @media (max-width:360px){
+            .search form{flex-direction:column;gap:8px}
+            .search button{width:100%}
+            .search select{width:100%}
+            .search .actions{flex-direction:column}
+            .search .actions button{width:100%}
+        }
+        @media (max-width: 420px){
+            .brand h1{font-size:20px}
+            .title{font-size:17px}
+        }
+    </style>
+</head>
+<body>
+<!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-KRG86BP5"
+                  height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->
+<header>
+    <button id="themeToggle" class="theme-toggle" aria-label="테마 전환">다크 모드</button>
+    <div class="brand">
+        <h1>하루한조각</h1>
+        <p>하루를 채우는 질문과 이야기</p>
+    </div>
+</header>
+
+<main class="wrap">
+    <section class="search">
+        <form th:action="@{/}" method="get">
+            <input type="text" name="query" placeholder="키워드로 검색…" th:value="${query}" />
+            <select name="sort" aria-label="정렬">
+                <option value="">최신순</option>
+                <option value="hits" th:selected="${sort == 'hits'}">조회수순</option>
+            </select>
+            <div class="actions">
+                <button type="submit">검색</button>
+                <button type="button" id="resetSearch">초기화</button>
+            </div>
+        </form>
+    </section>
+
+    <p class="hint" th:text="${#strings.isEmpty(query) ? '전체 기사' : '검색어: ' + query}"></p>
+
+    <!-- 결과 있을 때만 목록 노출 -->
+    <section class="list" th:if="${items != null and !items.isEmpty()}">
+        <article class="item" th:each="it : ${items}"
+                 th:attr="data-hits=${it.hits != null ? it.hits : 0},
+                          data-created=${#temporals.format(it.createdAt, 'yyyy-MM-dd')}">
+            <h2 class="title">
+                <a th:href="@{|/news/${it.id}|}" th:text="${it.title}">제목</a>
+            </h2>
+            <div class="meta">
+                <span th:text="${it.keyword}">keyword</span>
+                &nbsp;·&nbsp;
+                <time th:text="${#temporals.format(it.createdAt, 'yyyy-MM-dd HH:mm')}">2025-09-11</time>
+            </div>
+            <div class="hits">
+                조회수 <span th:text="${it.hits != null ? it.hits : 0}">0</span>
+            </div>
+<!--            <p class="excerpt" th:text="${it.content}">요약/본문 일부…</p>-->
+        </article>
+    </section>
+
+    <!-- 결과 없을 때 메시지 -->
+    <div class="empty" th:if="${items == null or items.isEmpty()}">
+        결과가 없습니다.
+    </div>
+
+    <div class="empty" th:if="${items == null or items.isEmpty()}">아직 기사가 없어요.</div>
+</main>
+
+<footer>
+    <small>뉴스는 Gemini로 만들어졌어요.</small>
+    <div class="footer-actions">
+        <a class="btn" href="https://github.com/hyojaeKwon" target="_blank" rel="noopener">개발자 알아보기</a>
+    </div>
+</footer>
+<script>
+(function(){
+    var btn = document.getElementById('themeToggle');
+    if(!btn) return;
+
+    function getTheme(){
+        return document.documentElement.getAttribute('data-theme') || '';
+    }
+    function setTheme(next){
+        if(next){
+            document.documentElement.setAttribute('data-theme', next);
+            localStorage.setItem('theme', next);
+        }else{
+            document.documentElement.removeAttribute('data-theme');
+            localStorage.removeItem('theme');
+        }
+        btn.textContent = (getTheme() === 'dark') ? '라이트 모드' : '다크 모드';
+    }
+
+    // Initialize label based on saved pref or system preference
+    var saved = localStorage.getItem('theme');
+    if(saved === 'dark' || saved === 'light'){
+        setTheme(saved);
+    }else{
+        var prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+        setTheme(prefersDark ? 'dark' : 'light');
+    }
+
+    btn.addEventListener('click', function(){
+        setTheme(getTheme() === 'dark' ? 'light' : 'dark');
+    });
+
+    // --- Client-side helpers for sort=today/hits until server supports ---
+    (function(){
+        var params = new URLSearchParams(location.search);
+
+        // Reset button: clear query & filters and go home
+        var resetBtn = document.getElementById('resetSearch');
+        if(resetBtn){
+            resetBtn.addEventListener('click', function(){
+                location.href = '/';
+            });
+        }
+
+        // When sort dropdown changes, auto-submit form to reload
+        var sortSelect = document.querySelector('.search select[name="sort"]');
+        if(sortSelect){
+            // Default selection on reload: if no sort param or blank, default to 최신순 (empty)
+            var currentSort = params.get('sort');
+            if(currentSort === null || currentSort.trim() === ''){
+                sortSelect.value = '';
+            } else {
+                sortSelect.value = currentSort;
+            }
+
+            sortSelect.addEventListener('change', function(){
+                this.form.submit();
+            });
+        }
+
+        // If sort=hits in query, sort the DOM list by data-hits desc
+        if(params.get('sort') === 'hits'){
+            var list = document.querySelector('.list');
+            if(list){
+                var items = Array.from(list.querySelectorAll('.item'));
+                items.sort(function(a,b){
+                    var ah = parseInt(a.getAttribute('data-hits')||'0',10);
+                    var bh = parseInt(b.getAttribute('data-hits')||'0',10);
+                    return bh - ah;
+                });
+                items.forEach(function(el){ list.appendChild(el); });
+            }
+        }
+    })();
+})();
+</script>
+</body>
+</html>

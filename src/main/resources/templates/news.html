@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ko">
+<head>
+    <!-- Google Tag Manager -->
+    <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+            new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+        j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+        'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+    })(window,document,'script','dataLayer','GTM-KRG86BP5');</script>
+    <!-- End Google Tag Manager -->
+    <meta charset="UTF-8" />
+    <script>
+        (function(){
+            try{
+                var pref = localStorage.getItem('theme');
+                if(pref === 'dark'){ document.documentElement.setAttribute('data-theme','dark'); }
+                else if(pref === 'light'){ document.documentElement.setAttribute('data-theme','light'); }
+            }catch(e){}
+        })();
+    </script>
+    <title th:text="${item.title}">News</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <style>
+        :root,[data-theme="light"]{--bg:#ffffff;--fg:#1e1e1e;--muted:#767676;--line:#e9e9e9;--w:760px}
+        @media (prefers-color-scheme: dark){
+            :root:not([data-theme="light"]){--bg:#0f1115;--fg:#e6e6e6;--muted:#9aa0a6;--line:#2a2f38}
+        }
+        [data-theme="dark"]{--bg:#0f1115;--fg:#e6e6e6;--muted:#9aa0a6;--line:#2a2f38}
+
+        /* Smooth theme transitions (respects reduced motion) */
+        @media (prefers-reduced-motion: no-preference){
+            body, header, .nav a, .theme-toggle, .meta, .hits, article, footer{
+                transition: background-color .25s ease, color .25s ease, border-color .25s ease, box-shadow .25s ease, transform .15s ease;
+            }
+        }
+
+        *{box-sizing:border-box}
+        body{margin:0;font-family:ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Apple SD Gothic Neo,Noto Sans KR,sans-serif;background:var(--bg);color:var(--fg)}
+        header{padding:24px 16px;border-bottom:1px solid var(--line);position:relative}
+        .nav{max-width:var(--w);margin:0 auto;text-align:left}
+        .nav a{color:var(--fg);text-decoration:none}
+        .nav a:hover{text-decoration:underline}
+        .nav a:focus{outline:2px solid var(--line); outline-offset:2px}
+
+        .theme-toggle{
+            position: absolute; right: 16px; top: 16px;
+            border:1px solid var(--line); background:transparent; color:var(--fg);
+            padding:8px 10px; border-radius:999px; font-size:13px; cursor:pointer;
+        }
+        .theme-toggle:hover{background:rgba(0,0,0,0.04)}
+        [data-theme="dark"] .theme-toggle:hover{background:rgba(255,255,255,0.06)}
+        .theme-toggle:active{transform:scale(.98)}
+
+        .wrap{max-width:var(--w);margin:0 auto;padding:28px 16px}
+        h1{margin:6px 0 10px;text-align:center;font-size:28px;line-height:1.3}
+        .meta{color:var(--muted);font-size:13px;text-align:center;margin-bottom:22px}
+        .hits{color:var(--muted);font-size:13px;text-align:center;margin:-12px 0 18px}
+        article{max-width:700px;margin:0 auto;line-height:1.85;font-size:16px;white-space:pre-wrap;text-align:left}
+
+        /* --- Mobile optimization --- */
+        img{max-width:100%;height:auto}
+        pre{max-width:100%;overflow:auto}
+        code{white-space:pre-wrap;word-break:break-word}
+        table{width:100%;border-collapse:collapse;display:block;overflow:auto}
+
+        @media (max-width: 760px){
+            :root{--w:100%}
+            header{padding:18px 12px}
+            .wrap{padding:20px 12px}
+            h1{font-size:22px;line-height:1.35}
+            .meta{font-size:12px}
+            .hits{font-size:12px}
+            article{font-size:15px;line-height:1.8}
+        }
+
+        @media (max-width: 420px){
+            h1{font-size:20px}
+        }
+    </style>
+</head>
+<body>
+<!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-KRG86BP5"
+                  height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->
+<header>
+    <button id="themeToggle" class="theme-toggle" aria-label="테마 전환">다크 모드</button>
+    <div class="nav">
+        <a href="/">← 홈으로</a>
+    </div>
+</header>
+
+<main class="wrap">
+<!--    <h1 th:text="${item.title}">제목</h1>-->
+    <div class="meta">
+        <span th:text="${item.keyword}">keyword</span>
+        &nbsp;·&nbsp;
+        <time th:text="${#temporals.format(item.createdAt, 'yyyy-MM-dd HH:mm')}">2025-09-11</time>
+    </div>
+    <div class="hits">
+        조회수 <span th:text="${item.hits != null ? item.hits : 0}">0</span>
+    </div>
+    <article th:utext="${item.content}">본문…</article>
+</main>
+<script>
+(function(){
+    var btn = document.getElementById('themeToggle');
+    if(!btn) return;
+
+    function getTheme(){
+        return document.documentElement.getAttribute('data-theme') || '';
+    }
+    function setTheme(next){
+        if(next){
+            document.documentElement.setAttribute('data-theme', next);
+            localStorage.setItem('theme', next);
+        }else{
+            document.documentElement.removeAttribute('data-theme');
+            localStorage.removeItem('theme');
+        }
+        btn.textContent = (getTheme() === 'dark') ? '라이트 모드' : '다크 모드';
+    }
+
+    // Initialize label based on saved pref or system preference
+    var saved = localStorage.getItem('theme');
+    if(saved === 'dark' || saved === 'light'){
+        setTheme(saved);
+    }else{
+        var prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+        setTheme(prefersDark ? 'dark' : 'light');
+    }
+
+    btn.addEventListener('click', function(){
+        setTheme(getTheme() === 'dark' ? 'light' : 'dark');
+    });
+})();
+</script>
+</body>
+</html>
