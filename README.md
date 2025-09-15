@@ -1,23 +1,27 @@
 # 뉴스레터 서비스 (Newsletter Service)
 
+연구실에서 딴짓하고싶어서 만든,,
+
 주기적으로 발행되는 뉴스레터를 관리하고 조회하는 Spring Boot 기반의 백엔드 애플리케이션입니다.
 
-## ✨ 주요 기능
+일단 지금은 v1임
+
+## 주요 기능
 
 - 키워드를 사용한 뉴스레터 검색
 - 날짜 또는 조회수를 기준으로 한 정렬
 - 뉴스레터 상세 내용 조회
 - Markdown 형식의 콘텐츠를 HTML로 렌더링하여 제공
 
-## 🛠️ 기술 스택
+## 기술 스택
 
 - **Language**: Java 17
 - **Framework**: Spring Boot 3.x
 - **Build Tool**: Gradle
-- **Database**: AWS DynamoDB
+- **Database**: AWS DynamoDB + mysql 
 - **Template Engine**: Thymeleaf
 
-## ⚙️ 시작하기
+## 시작하기
 
 ### 사전 준비
 
@@ -55,7 +59,7 @@
 
     실행 후 `http://localhost:8080`으로 접속하여 확인할 수 있습니다.
 
-## 🌐 API 및 화면 안내
+## API 및 화면 안내
 
 이 애플리케이션은 REST API가 아닌, 서버 사이드 렌더링(SSR)을 통해 HTML 페이지를 제공합니다.
 
@@ -69,3 +73,11 @@
 
 - **`GET /news/{id}`**: 뉴스레터 상세 페이지
   - 특정 ID를 가진 뉴스레터의 상세 내용을 보여줍니다.
+
+## TODO LIST
+
+앞으로 개발해 나갈 목록
+
+1. 페이징 처리를 어떻게 구현할 것인지 고민하기
+2. 기사 카테고리화 시키기
+3. mali sending 
